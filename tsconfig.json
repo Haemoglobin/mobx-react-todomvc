@@ -5,8 +5,7 @@
         "noImplicitAny": false,
         "experimentalDecorators": true,
         "jsx": "react",
-        "outDir": "js",
-        "allowJs": true
+        "outDir": "js"
     },
     "exclude": [
         "node_modules"

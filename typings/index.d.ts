@@ -5,3 +5,4 @@
 /// <reference path="modules/body-parser/index.d.ts" />
 /// <reference path="modules/express/index.d.ts" />
 /// <reference path="modules/react-dom/index.d.ts" />
+/// <reference path="modules/webpack/index.d.ts" />

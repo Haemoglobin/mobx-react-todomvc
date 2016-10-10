@@ -1,7 +1,7 @@
-var path = require('path');
-var webpack = require('webpack');
+import path = require('path');
+import webpack = require('webpack');
 
-module.exports = {
+const config: webpack.Configuration = {
   devtool: 'eval',
   entry: [
     'webpack-hot-middleware/client',
@@ -31,3 +31,5 @@ module.exports = {
     ]
   }
 };
+ 
+module.exports = config; 

@@ -8,6 +8,7 @@
   "dependencies": {
     "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
     "express": "registry:npm/express#4.14.0+20160925001530",
-    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104"
+    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104",
+    "webpack": "registry:npm/webpack#1.12.9+20160418172948"
   }
 }
