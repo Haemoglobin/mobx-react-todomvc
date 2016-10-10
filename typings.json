@@ -1,0 +1,13 @@
+{
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20161010101523",
+    "react": "registry:dt/react#0.14.0+20161008064207",
+    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20161004182750",
+    "whatwg-streams": "registry:dt/whatwg-streams#0.0.0+20160829180742"
+  },
+  "dependencies": {
+    "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
+    "express": "registry:npm/express#4.14.0+20160925001530",
+    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104"
+  }
+}

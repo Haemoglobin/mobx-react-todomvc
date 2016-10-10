@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "TodoMVC reference implementation based on React TodoMVC and mobx-react-boilerplate",
   "scripts": {
-    "start": "node bin/server.js",
+    "start": "tsc&&node js/bin/server.js",
     "lint": "eslint src"
   },
   "repository": {
@@ -27,28 +27,30 @@
   "homepage": "https://github.com/mobxjs/mobx/",
   "devDependencies": {
     "awesome-typescript-loader": "^2.2.4",
-    "body-parser": "^1.15.0",
-    "css-loader": "^0.23.1",
-    "eslint-plugin-react": "^3.16.1",
-    "file-loader": "^0.8.5",
-    "jquery": "^2.2.0",
-    "style-loader": "^0.13.0",
-    "webpack": "^1.9.6",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-dev-server": "^1.8.2"
+    "body-parser": "^1.15.2",
+    "css-loader": "^0.25.0",
+    "eslint-plugin-react": "^6.3.0",
+    "file-loader": "^0.9.0",
+    "jquery": "^3.1.1",
+    "style-loader": "^0.13.1",
+    "ts-loader": "^0.9.0",
+    "typescript": "^2.0.3",
+    "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
-    "classnames": "^2.2.3",
+    "classnames": "^2.2.5",
     "director": "^1.2.8",
-    "express": "^4.13.4",
-    "mobx": "^2.0.0",
-    "mobx-react": "^3.0.0",
-    "mobx-react-devtools": "^4.0.5",
-    "react": "^0.14.6",
-    "react-dom": "^0.14.0",
-    "todomvc-app-css": "^2.0.1",
+    "express": "^4.14.0",
+    "mobx": "^2.6.0",
+    "mobx-react": "^3.5.8",
+    "mobx-react-devtools": "^4.2.8",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "todomvc-app-css": "^2.0.6",
     "todomvc-common": "^1.0.2",
     "url-loader": "^0.5.7",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack-hot-middleware": "^2.12.2"
   }
 }

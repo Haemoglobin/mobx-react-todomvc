@@ -1,10 +1,10 @@
-import {observable, computed, reaction} from 'mobx';
+import {observable, computed, reaction, IObservableArray} from 'mobx';
 import TodoModel from '../models/TodoModel'
 import * as Utils from '../utils';
 
 
 export default class TodoStore {
-	@observable todos = [];
+	@observable todos = <IObservableArray<TodoModel>>[];
 
 	@computed get activeTodoCount() {
 		return this.todos.reduce(
@@ -31,15 +31,15 @@ export default class TodoStore {
 	subscribeLocalstorageToStore() {
 		reaction(
 			() => this.toJS(),
-			todos => localStorage.setItem('mobx-react-todomvc-todos', todos)
+			todos => localStorage.setItem('mobx-react-todomvc-todos', <any>todos)
 		);
 	}
 
-	addTodo (title) {
+	addTodo (title: string) {
 		this.todos.push(new TodoModel(this, Utils.uuid(), title, false));
 	}
 
-	toggleAll (checked) {
+	toggleAll (checked: boolean) {
 		this.todos.forEach(
 			todo => todo.completed = checked
 		);
@@ -48,16 +48,16 @@ export default class TodoStore {
 	clearCompleted () {
 		this.todos = this.todos.filter(
 			todo => !todo.completed
-		);
+		) as any;
 	}
 
 	toJS() {
 		return this.todos.map(todo => todo.toJS());
 	}
 
-	static fromJS(array) {
+	static fromJS(array: any) {
 		const todoStore = new TodoStore();
-		todoStore.todos = array.map(item => TodoModel.fromJS(todoStore, item));
+		todoStore.todos = array.map((item: any) => TodoModel.fromJS(todoStore, item));
 		return todoStore;
 	}
 }

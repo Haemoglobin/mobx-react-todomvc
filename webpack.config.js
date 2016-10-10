@@ -22,13 +22,12 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.ts', '.tsx']
   },
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ['babel'],
-      exclude: /(node_modules)/,
-    }]
+    loaders: [
+      // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+      { test: /\.tsx?$/, loader: 'ts-loader' }
+    ]
   }
 };

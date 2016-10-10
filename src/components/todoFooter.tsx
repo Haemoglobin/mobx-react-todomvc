@@ -1,10 +1,15 @@
-import React from 'react';
+import React = require('react');
 import {observer} from 'mobx-react';
 import {pluralize} from '../utils';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
+interface Props {
+	viewStore: any; 
+	todoStore: any;
+}
+
 @observer
-export default class TodoFooter extends React.Component {
+export default class TodoFooter extends React.Component<Props, {}> {
 	render() {
 		const todoStore = this.props.todoStore;
 		if (!todoStore.activeTodoCount && !todoStore.completedCount)
@@ -34,7 +39,7 @@ export default class TodoFooter extends React.Component {
 		);
 	}
 
-	renderFilterLink(filterName, url, caption) {
+	renderFilterLink(filterName: string, url: string, caption: string) {
 		return (<li>
 			<a href={"#/" + url}
 				className={filterName ===  this.props.viewStore.todoFilter ? "selected" : ""}>
@@ -47,9 +52,4 @@ export default class TodoFooter extends React.Component {
 	clearCompleted = () => {
 		this.props.todoStore.clearCompleted();
 	};
-}
-
-TodoFooter.propTypes = {
-	viewStore: React.PropTypes.object.isRequired,
-	todoStore: React.PropTypes.object.isRequired
 }

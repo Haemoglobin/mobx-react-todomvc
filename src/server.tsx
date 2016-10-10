@@ -1,16 +1,17 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import path from 'path';
+import express = require('express');
+import bodyParser = require('body-parser');
+import path = require('path');
 
 import { renderToString } from 'react-dom/server'
 
 import TodoStore from '../src/stores/TodoStore';
 import ViewStore from '../src/stores/ViewStore';
-import TodoApp from '../src/components/todoApp.js';
-import React from 'react';
+import TodoApp from '../src/components/todoApp';
+import TodoModel from './models/TodoModel';
+import React = require('react');
 
 const app = express();
-app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')))
+app.use('/node_modules', express.static(path.resolve('./node_modules')));
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -20,7 +21,7 @@ const compiler = webpack(config);
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
 app.use(webpackHotMiddleware(compiler));
 
-const renderFullPage = html => {
+const renderFullPage = (html: string) => {
 	const initialState = { todos };
 	return `
 	<!doctype html>
@@ -46,11 +47,11 @@ const renderFullPage = html => {
 	`
 };
 
-let todos = []; // Todos are stored here
+let todos: Array<TodoModel> = []; // Todos are stored here
 
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
+app.get('/', function(req: express.Request, res: express.Response) {
 	const todoStore = TodoStore.fromJS(todos);
 	const viewStore = new ViewStore();
 
@@ -63,8 +64,8 @@ app.get('/', function(req, res) {
 	res.status(200).send(page);
 });
 
-app.post('/api/todos', function(req, res) {
-	todos = req.body.todos;
+app.post('/api/todos', function(req: express.Request, res: express.Response) {
+	todos = (req as any).body.todos;
 	if (Array.isArray(todos)) {
 		console.log(`Updated todos (${todos.length})`);
 		res.status(201).send(JSON.stringify({ success: true }));
@@ -74,18 +75,18 @@ app.post('/api/todos', function(req, res) {
 });
 
 // example of handling 404 pages
-app.get('*', function(req, res) {
+app.get('*', function(req: express.Request, res: express.Response) {
 	res.status(404).send('Server.js > 404 - Page Not Found');
 });
 
 // global error catcher, need four arguments
-app.use((err, req, res, next) => {
+app.use((err: any, req: any, res: any, next: any) => {
 	console.error("Error on request %s %s", req.method, req.url);
 	console.error(err.stack);
 	res.status(500).send("Server error");
 });
 
-process.on('uncaughtException', evt => {
+process.on('uncaughtException', (evt: any) => {
 	console.log('uncaughtException: ', evt);
 });
 

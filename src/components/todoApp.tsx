@@ -1,4 +1,4 @@
-import React from 'react';
+import React = require('react');
 import {observer} from 'mobx-react';
 import {Router} from 'director';
 
@@ -9,8 +9,13 @@ import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 import DevTool from 'mobx-react-devtools';
 
+interface Props {
+	todoStore: any;
+	viewStore: any;
+}
+
 @observer
-export default class TodoApp extends React.Component {
+export default class TodoApp extends React.Component<Props, {}> {
 	render() {
 		const {todoStore, viewStore} = this.props;
 		return (
@@ -36,8 +41,3 @@ export default class TodoApp extends React.Component {
 		router.init('/');
 	}
 }
-
-TodoApp.propTypes = {
-	viewStore: React.PropTypes.object.isRequired,
-	todoStore: React.PropTypes.object.isRequired
-};

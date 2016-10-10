@@ -1,6 +1,6 @@
 export function	uuid() {
 	/*jshint bitwise:false */
-	var i, random;
+	var i: number, random: number;
 	var uuid = '';
 
 	for (i = 0; i < 32; i++) {
@@ -15,7 +15,6 @@ export function	uuid() {
 	return uuid;
 }
 
-export function pluralize(count, word) {
+export function pluralize(count: number, word: string) {
 	return count === 1 ? word : word + 's';
 }
-
