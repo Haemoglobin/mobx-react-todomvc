@@ -2,32 +2,29 @@ import React = require('react');
 import {observer} from 'mobx-react';
 import {pluralize} from '../utils';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
-
-interface Props {
-	viewStore: any; 
-	todoStore: any;
-}
+import State from '../state';
+import actions from '../actions';
+const state = State.getState();
 
 @observer
-export default class TodoFooter extends React.Component<Props, {}> {
+export default class TodoFooter extends React.Component<{}, {}> {
 	render() {
-		const todoStore = this.props.todoStore;
-		if (!todoStore.activeTodoCount && !todoStore.completedCount)
+		if (!state.activeTodoCount && !state.completedCount)
 			return null;
 
-		const activeTodoWord = pluralize(todoStore.activeTodoCount, 'item');
+		const activeTodoWord = pluralize(state.activeTodoCount, 'item');
 
 		return (
 			<footer className="footer">
 				<span className="todo-count">
-					<strong>{todoStore.activeTodoCount}</strong> {activeTodoWord} left
+					<strong>{state.activeTodoCount}</strong> {activeTodoWord} left
 				</span>
 				<ul className="filters">
 					{this.renderFilterLink(ALL_TODOS, "", "All")}
 					{this.renderFilterLink(ACTIVE_TODOS, "active", "Active")}
 					{this.renderFilterLink(COMPLETED_TODOS, "completed", "Completed")}
 				</ul>
-				{ todoStore.completedCount === 0
+				{ state.completedCount === 0
 					? null
 					: 	<button
 							className="clear-completed"
@@ -42,7 +39,7 @@ export default class TodoFooter extends React.Component<Props, {}> {
 	renderFilterLink(filterName: string, url: string, caption: string) {
 		return (<li>
 			<a href={"#/" + url}
-				className={filterName ===  this.props.viewStore.todoFilter ? "selected" : ""}>
+				className={filterName ===  state.todoFilter ? "selected" : ""}>
 				{caption}
 			</a>
 			{' '}
@@ -50,6 +47,6 @@ export default class TodoFooter extends React.Component<Props, {}> {
 	}
 
 	clearCompleted = () => {
-		this.props.todoStore.clearCompleted();
+		actions.clearCompleted();
 	};
 }

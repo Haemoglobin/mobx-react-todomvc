@@ -1,27 +1,24 @@
-import TodoStore from './stores/TodoStore';
-import ViewStore from './stores/ViewStore';
+import State from './state';
 import React = require('react');
 import ReactDOM = require('react-dom');
-let w = window as any; 
-const initialState = w.initialState && JSON.parse(w.initialState) || {};
+import load from './load';
 
-var todoStore = TodoStore.fromJS(initialState.todos || []);
-var viewStore = new ViewStore();
+const initialState = (window as any).initialState && JSON.parse((window as any).initialState) || {};
 
-todoStore.subscribeServerToStore();
+State.setState(initialState.todos || []);
 const rootElement = document.getElementById('todoapp');
 // necessary for hot reloading
 let render = () => {
-	const TodoApp = require('./components/todoApp').default;
+	const TodoApp = require('./components/todo-app').default;
 	ReactDOM.render(
-		<TodoApp todoStore={todoStore} viewStore={viewStore} />,
+		<TodoApp />,
 		rootElement
 	);
 };
 
 if ((module as any).hot) {
 	const renderApp = render;
-	const renderError = (error) => {
+	const renderError = (error: any) => {
 		const RedBox = require('redbox-react');
 		ReactDOM.render(
 			<RedBox error={error} />,
@@ -35,9 +32,10 @@ if ((module as any).hot) {
 			renderError(error);
 		}
 	};
-	(module as any).hot.accept('./components/todoApp', () => {
+	(module as any).hot.accept('./components/todo-app', () => {
 		setTimeout(render);
 	});
 }
 
 render();
+load.init();

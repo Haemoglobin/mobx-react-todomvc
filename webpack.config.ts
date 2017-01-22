@@ -1,6 +1,5 @@
 import path = require('path');
 import webpack = require('webpack');
-var NODE_MODULES_PATH = path.resolve(__dirname, 'node_modules');
 
 const config: webpack.Configuration = {
   devtool: 'eval',

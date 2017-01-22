@@ -1,26 +1,32 @@
 import React = require('react');
 import {observer} from 'mobx-react';
 import {observable, expr} from 'mobx';
+import State from '../state';
+import Todo from '../models/todo';
+const state = State.getState();
+import actions from '../actions';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
 interface Props {
-	todo: any,
-	viewStore: any
+	todo: Todo,
 }
 
 @observer
-export default class TodoItem extends React.Component<Props, any> {
+export default class TodoItem extends React.Component<Props, {}> {
 	@observable editText = "";
 
 	render() {
-		const {viewStore, todo} = this.props;
-		return (
-			<li className={[
+		const {todo} = this.props;
+		
+		let className = [
 				todo.completed ? "completed": "",
-				expr(() => todo === viewStore.todoBeingEdited ? "editing" : "")
-			].join(" ")}>
+				expr(() => todo === state.todoBeingEdited ? "editing" : "")
+			].join(" ");
+		
+		return (
+			<li className={className}>
 				<div className="view">
 					<input
 						className="toggle"
@@ -48,29 +54,29 @@ export default class TodoItem extends React.Component<Props, any> {
 	handleSubmit = (event: any) => {
 		const val = this.editText.trim();
 		if (val) {
-			this.props.todo.setTitle(val);
+			actions.setTitle(this.props.todo, val);
 			this.editText = val;
 		} else {
 			this.handleDestroy();
 		}
-		this.props.viewStore.todoBeingEdited = null;
+		state.todoBeingEdited = null;
 	};
 
 	handleDestroy = () => {
-		this.props.todo.destroy();
-		this.props.viewStore.todoBeingEdited = null;
+		actions.removeTodo(this.props.todo);
+		state.todoBeingEdited = null;
 	};
 
 	handleEdit = () => {
 		const todo = this.props.todo;
-		this.props.viewStore.todoBeingEdited = todo;
+		state.todoBeingEdited = todo;
 		this.editText = todo.title;
 	};
 
 	handleKeyDown = (event: any) => {
 		if (event.which === ESCAPE_KEY) {
 			this.editText = this.props.todo.title;
-			this.props.viewStore.todoBeingEdited = null;
+			state.todoBeingEdited = null;
 		} else if (event.which === ENTER_KEY) {
 			this.handleSubmit(event);
 		}
@@ -81,6 +87,6 @@ export default class TodoItem extends React.Component<Props, any> {
 	};
 
 	handleToggle = () => {
-		this.props.todo.toggle();
+		actions.toggle(this.props.todo);
 	};
 }

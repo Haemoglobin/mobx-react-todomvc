@@ -1,32 +1,28 @@
 import React = require('react');
 import {observer} from 'mobx-react';
 import { ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
-
-import TodoItem from './todoItem';
-
-interface Props {
-	viewStore: any; 
-	todoStore: any;
-}
+import State from '../state';
+import TodoItem from './todo-item';
+import Todo from '../models/todo';
+import actions from '../actions';
+const state = State.getState();
 @observer
-export default class TodoOverview extends React.Component<Props, any> {
+export default class TodoOverview extends React.Component<{}, {}> {
 	render() {
-		const {todoStore, viewStore} = this.props;
-		if (todoStore.todos.length === 0)
+		if (state.todos.length === 0)
 			return null;
 		return <section className="main">
 			<input
 				className="toggle-all"
 				type="checkbox"
 				onChange={this.toggleAll}
-				checked={todoStore.activeTodoCount === 0}
+				checked={state.activeTodoCount === 0}
 			/>
 			<ul className="todo-list">
 				{this.getVisibleTodos().map(todo =>
 					(<TodoItem
 						key={todo.id}
 						todo={todo}
-						viewStore={viewStore}
 					/>)
 				)}
 			</ul>
@@ -34,8 +30,8 @@ export default class TodoOverview extends React.Component<Props, any> {
 	}
 
 	getVisibleTodos(): any[] {
-		return this.props.todoStore.todos.filter((todo: any) => {
-			switch (this.props.viewStore.todoFilter) {
+		return state.todos.filter((todo) => {
+			switch (state.todoFilter) {
 				case ACTIVE_TODOS:
 					return !todo.completed;
 				case COMPLETED_TODOS:
@@ -48,6 +44,6 @@ export default class TodoOverview extends React.Component<Props, any> {
 
 	toggleAll = (event: any) => {
 		var checked = event.target.checked;
-		this.props.todoStore.toggleAll(checked);
+		actions.toggleAll(checked);
 	};
 }

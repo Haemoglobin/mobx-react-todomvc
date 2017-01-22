@@ -1,13 +1,16 @@
+#!/usr/bin/env node
+(global as any).__CLIENT__ = false;
+(global as any).__SERVER__ = true;
+
 import express = require('express');
 import bodyParser = require('body-parser');
 import path = require('path');
 let escape = require('jsesc');
 import { renderToString } from 'react-dom/server'
 
-import TodoStore from '../src/stores/TodoStore';
-import ViewStore from '../src/stores/ViewStore';
-import TodoApp from '../src/components/todoApp';
-import TodoModel from './models/TodoModel';
+import State from '../src/state';
+import TodoApp from '../src/components/todo-app';
+import Todo from '../src/models/todo';
 import React = require('react');
 
 const app = express();
@@ -42,25 +45,21 @@ const renderFullPage = (html: string) => {
 			<script src="/static/bundle.js"></script>
 			<footer class="info">
 				<p>Double-click to edit a todo</p>
-				<p>TodoMVC powered by React and <a href="http://github.com/mobxjs/mobx/">MobX</a>. Created by <a href="http://github.com/mweststrate/">mweststrate</a></p>
-				<p>Based on the base React TodoMVC by <a href="http://github.com/petehunt/">petehunt</a></p>
-				<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 			</footer>
 		</body>
 	</html>
 	`
 };
 
-let todos: Array<TodoModel> = []; // Todos are stored here
+let todos: Array<Todo> = []; // Todos are stored here
 
 app.use(bodyParser.json());
 
 app.get('/', function(req: express.Request, res: express.Response) {
-	const todoStore = TodoStore.fromJS(todos);
-	const viewStore = new ViewStore();
+	const state = State.setState(todos);
 
 	const initView = renderToString((
-		<TodoApp todoStore={todoStore} viewStore={viewStore} />
+		<TodoApp />
 	));
 
 	const page = renderFullPage(initView);
