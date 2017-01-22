@@ -5,13 +5,15 @@ import {Router} from 'director';
 import TodoEntry from './todoEntry';
 import TodoOverview from './todoOverview';
 import TodoFooter from './todoFooter';
+import TodoStore from '../stores/TodoStore';
+import ViewStore from '../stores/ViewStore';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 import DevTool from 'mobx-react-devtools';
 
 interface Props {
-	todoStore: any;
-	viewStore: any;
+	todoStore: TodoStore;
+	viewStore: ViewStore;
 }
 
 @observer

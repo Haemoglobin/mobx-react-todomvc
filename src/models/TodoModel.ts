@@ -18,7 +18,7 @@ export default class TodoModel {
 	}
 
 	destroy() {
-		this.store.todos.remove(this);
+		this.store.removeTodo(this);
 	}
 
 	setTitle(title: string) {

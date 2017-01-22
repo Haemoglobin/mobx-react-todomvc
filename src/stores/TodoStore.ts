@@ -4,13 +4,10 @@ import * as Utils from '../utils';
 
 
 export default class TodoStore {
-	@observable todos = <IObservableArray<TodoModel>>[];
+	@observable todos: TodoModel[] = [];
 
 	@computed get activeTodoCount() {
-		return this.todos.reduce(
-			(sum, todo) => sum + (todo.completed ? 0 : 1),
-			0
-		)
+		return this.todos.filter(todo => !todo.completed).length;
 	}
 
 	@computed get completedCount() {
@@ -38,10 +35,12 @@ export default class TodoStore {
 		);
 	}
 
+	removeTodo(todoToRemove: TodoModel) {
+		this.todos = this.todos.filter(todo => todo.id !== todoToRemove.id);
+	}
+
 	clearCompleted () {
-		this.todos = this.todos.filter(
-			todo => !todo.completed
-		) as any;
+		this.todos = this.todos.filter(todo => !todo.completed);
 	}
 
 	toJS() {

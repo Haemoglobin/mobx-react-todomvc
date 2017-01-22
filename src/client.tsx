@@ -1,7 +1,5 @@
-// import 'todomvc-common';
 import TodoStore from './stores/TodoStore';
 import ViewStore from './stores/ViewStore';
-import TodoAppType from './components/todoApp';
 import React = require('react');
 import ReactDOM = require('react-dom');
 let w = window as any; 
@@ -14,7 +12,7 @@ todoStore.subscribeServerToStore();
 const rootElement = document.getElementById('todoapp');
 // necessary for hot reloading
 let render = () => {
-	const TodoApp: typeof TodoAppType = require('./components/todoApp').default;
+	const TodoApp = require('./components/todoApp').default;
 	ReactDOM.render(
 		<TodoApp todoStore={todoStore} viewStore={viewStore} />,
 		rootElement

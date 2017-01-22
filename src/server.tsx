@@ -23,7 +23,7 @@ app.use(webpackHotMiddleware(compiler));
 
 const renderFullPage = (html: string) => {
 	const initialState = { todos };
-	const initialStateJSON = escape( // So safe!
+	const initialStateJSON = escape( 
 		JSON.stringify(initialState),
 		{ wrap: true, isScriptContext: true, json: true }
 	);
