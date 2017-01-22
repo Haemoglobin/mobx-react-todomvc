@@ -28,13 +28,6 @@ export default class TodoStore {
 		);
 	}
 
-	subscribeLocalstorageToStore() {
-		reaction(
-			() => this.toJS(),
-			todos => localStorage.setItem('mobx-react-todomvc-todos', <any>todos)
-		);
-	}
-
 	addTodo (title: string) {
 		this.todos.push(new TodoModel(this, Utils.uuid(), title, false));
 	}

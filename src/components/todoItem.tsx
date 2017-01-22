@@ -1,5 +1,6 @@
 import React = require('react');
-import { observer } from 'mobx-react';
+import {observer} from 'mobx-react';
+import {observable, expr} from 'mobx';
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -11,17 +12,14 @@ interface Props {
 
 @observer
 export default class TodoItem extends React.Component<Props, any> {
-	constructor(props: Props, context: any) {
-		super(props, context);
-		this.state = { editText: props.todo.title };
-	}
+	@observable editText = "";
 
 	render() {
 		const {viewStore, todo} = this.props;
 		return (
 			<li className={[
-				todo.completed ? "completed" : "",
-				todo === viewStore.todoBeingEdited ? "editing" : ""
+				todo.completed ? "completed": "",
+				expr(() => todo === viewStore.todoBeingEdited ? "editing" : "")
 			].join(" ")}>
 				<div className="view">
 					<input
@@ -38,7 +36,7 @@ export default class TodoItem extends React.Component<Props, any> {
 				<input
 					ref="editField"
 					className="edit"
-					value={this.state.editText}
+					value={this.editText}
 					onBlur={this.handleSubmit}
 					onChange={this.handleChange}
 					onKeyDown={this.handleKeyDown}
@@ -48,10 +46,10 @@ export default class TodoItem extends React.Component<Props, any> {
 	}
 
 	handleSubmit = (event: any) => {
-		const val = this.state.editText.trim();
+		const val = this.editText.trim();
 		if (val) {
 			this.props.todo.setTitle(val);
-			this.setState({ editText: val });
+			this.editText = val;
 		} else {
 			this.handleDestroy();
 		}
@@ -66,12 +64,12 @@ export default class TodoItem extends React.Component<Props, any> {
 	handleEdit = () => {
 		const todo = this.props.todo;
 		this.props.viewStore.todoBeingEdited = todo;
-		this.setState({ editText: todo.title });
+		this.editText = todo.title;
 	};
 
 	handleKeyDown = (event: any) => {
 		if (event.which === ESCAPE_KEY) {
-			this.setState({ editText: this.props.todo.title });
+			this.editText = this.props.todo.title;
 			this.props.viewStore.todoBeingEdited = null;
 		} else if (event.which === ENTER_KEY) {
 			this.handleSubmit(event);
@@ -79,7 +77,7 @@ export default class TodoItem extends React.Component<Props, any> {
 	};
 
 	handleChange = (event: any) => {
-		this.setState({ editText: event.target.value });
+		this.editText = event.target.value;
 	};
 
 	handleToggle = () => {

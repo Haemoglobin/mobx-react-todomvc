@@ -1,7 +1,7 @@
 import express = require('express');
 import bodyParser = require('body-parser');
 import path = require('path');
-
+let escape = require('jsesc');
 import { renderToString } from 'react-dom/server'
 
 import TodoStore from '../src/stores/TodoStore';
@@ -23,6 +23,10 @@ app.use(webpackHotMiddleware(compiler));
 
 const renderFullPage = (html: string) => {
 	const initialState = { todos };
+	const initialStateJSON = escape( // So safe!
+		JSON.stringify(initialState),
+		{ wrap: true, isScriptContext: true, json: true }
+	);
 	return `
 	<!doctype html>
 	<html lang="utf-8">
@@ -30,7 +34,7 @@ const renderFullPage = (html: string) => {
 			<link rel="stylesheet" href="/node_modules/todomvc-common/base.css">
 			<link rel="stylesheet" href="/node_modules/todomvc-app-css/index.css">
 			<script>
-				window.initialState = ${JSON.stringify(initialState)}
+				window.initialState = ${initialStateJSON}
 			</script>
 		</head>
 		<body>
@@ -74,12 +78,10 @@ app.post('/api/todos', function(req: express.Request, res: express.Response) {
 	}
 });
 
-// example of handling 404 pages
 app.get('*', function(req: express.Request, res: express.Response) {
 	res.status(404).send('Server.js > 404 - Page Not Found');
 });
 
-// global error catcher, need four arguments
 app.use((err: any, req: any, res: any, next: any) => {
 	console.error("Error on request %s %s", req.method, req.url);
 	console.error(err.stack);

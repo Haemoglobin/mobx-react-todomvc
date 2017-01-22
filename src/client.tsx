@@ -1,11 +1,11 @@
-import 'todomvc-common';
+// import 'todomvc-common';
 import TodoStore from './stores/TodoStore';
 import ViewStore from './stores/ViewStore';
 import TodoAppType from './components/todoApp';
 import React = require('react');
 import ReactDOM = require('react-dom');
-
-const initialState = (window as any).initialState || {};
+let w = window as any; 
+const initialState = w.initialState && JSON.parse(w.initialState) || {};
 
 var todoStore = TodoStore.fromJS(initialState.todos || []);
 var viewStore = new ViewStore();
