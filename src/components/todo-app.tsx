@@ -1,5 +1,6 @@
 import React = require('react');
 import {observer} from 'mobx-react';
+import {action} from 'mobx';
 let {Router} = require('director');
 
 import TodoEntry from './todo-entry';
@@ -14,6 +15,7 @@ const state = State.getState();
 
 @observer
 export default class TodoApp extends React.Component<{}, {}> {
+	
 	render() {
 		return (
 			<div>
@@ -28,11 +30,16 @@ export default class TodoApp extends React.Component<{}, {}> {
 		);
 	}
 
+	@action
+	changeFilter(filter: string) {
+		state.todoFilter = filter;
+	}
+
 	componentDidMount() {
 		var router = Router({
-			'/': function() { state.todoFilter = ALL_TODOS; },
-			'/active': function() { state.todoFilter = ACTIVE_TODOS; },
-			'/completed': function() {  state.todoFilter = COMPLETED_TODOS; }
+			'/': () => this.changeFilter(ALL_TODOS),
+			'/active': () => { this.changeFilter(ACTIVE_TODOS) },
+			'/completed': () => { this.changeFilter(COMPLETED_TODOS) }
 		});
 		router.init('/');
 	}

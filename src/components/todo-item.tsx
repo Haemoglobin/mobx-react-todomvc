@@ -32,26 +32,27 @@ export default class TodoItem extends React.Component<Props, {}> {
 						checked={todo.completed}
 						onChange={this.handleToggle.bind(this)}
 						/>
-					<label onDoubleClick={this.handleEdit}>
+					<label onDoubleClick={this.handleEdit.bind(this)}>
 						{todo.title}
 					</label>
-					<button className="destroy" onClick={this.handleDestroy} />
+					<button className="destroy" onClick={this.removeTodo.bind(this)} />
 				</div>
 				<input
 					ref="editField"
 					className="edit"
 					value={this.editText}
-					onBlur={this.handleSubmit}
-					onChange={this.handleChange}
-					onKeyDown={this.handleKeyDown}
+					onBlur={this.handleSubmit.bind(this)}
+					onChange={this.handleChange.bind(this)}
+					onKeyDown={this.handleKeyDown.bind(this)}
 					/>
 			</li>
 		);
 	}
 
 	@action
-	removeTodo(todoToRemove: Todo) {
-		state.todos = state.todos.filter(todo => todo.id !== todoToRemove.id);
+	removeTodo() {
+		state.todoBeingEdited = null;
+		state.todos = state.todos.filter(todo => todo.id !== this.props.todo.id);
 	}
 
 	@action
@@ -64,38 +65,43 @@ export default class TodoItem extends React.Component<Props, {}> {
 		todo.title = title;
 	}
 
-	handleSubmit = (event: any) => {
+	@action
+	editTodo(todo: Todo) {
+		state.todoBeingEdited = todo;
+	}
+
+	@action
+	setText(text: string) {
+		this.editText = text;
+	}
+
+	handleSubmit(event: any) {
 		const val = this.editText.trim();
 		if (val) {
 			this.setTitle(this.props.todo, val);
-			this.editText = val;
+			this.setText(val);
 		} else {
-			this.handleDestroy();
+			this.removeTodo();
 		}
-		state.todoBeingEdited = null;
+		this.editTodo(null);
 	};
 
-	handleDestroy = () => {
-		this.removeTodo(this.props.todo);
-		state.todoBeingEdited = null;
+	handleEdit() {
+		let todo = this.props.todo;
+		this.editTodo(todo);
+		this.setText(todo.title);
 	};
 
-	handleEdit = () => {
-		const todo = this.props.todo;
-		state.todoBeingEdited = todo;
-		this.editText = todo.title;
-	};
-
-	handleKeyDown = (event: any) => {
+	handleKeyDown(event: any) {
 		if (event.which === ESCAPE_KEY) {
-			this.editText = this.props.todo.title;
-			state.todoBeingEdited = null;
+			this.setText(this.props.todo.title);
+			this.editTodo(null);
 		} else if (event.which === ENTER_KEY) {
 			this.handleSubmit(event);
 		}
 	};
 
-	handleChange = (event: any) => {
-		this.editText = event.target.value;
+	handleChange(event: any) {
+		this.setText(event.target.value);
 	};
 }

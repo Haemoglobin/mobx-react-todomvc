@@ -16,7 +16,7 @@ export default class TodoEntry extends React.Component<{}, {}> {
 				ref="newField"
 				className="new-todo"
 				placeholder="What needs to be done?"
-				onKeyDown={this.handleNewTodoKeyDown}
+				onKeyDown={this.handleNewTodoKeyDown.bind(this)}
 				autoFocus={true}
 			/>
 		);
@@ -27,7 +27,7 @@ export default class TodoEntry extends React.Component<{}, {}> {
 		state.todos.push(new Todo(Utils.uuid(), title, false));
 	}
 
-	handleNewTodoKeyDown = (event: any) => {
+	handleNewTodoKeyDown(event: any) {
 		if (event.keyCode !== ENTER_KEY) {
 			return;
 		}
