@@ -1,8 +1,7 @@
 import React = require('react');
 import {observer} from 'mobx-react';
 import {observable, expr} from 'mobx';
-import State from '../state';
-import Todo from '../models/todo';
+import State, {Todo} from '../state/state';
 const state = State.getState();
 import {action} from 'mobx';
 const ESCAPE_KEY = 27;

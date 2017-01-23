@@ -12,6 +12,7 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "dist": true
+        "dist": true,
+        "js": true
     }
 }

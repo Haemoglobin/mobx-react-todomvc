@@ -2,9 +2,8 @@ import React = require('react');
 import {observer} from 'mobx-react';
 import {action} from 'mobx';
 import { ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
-import State from '../state';
+import State, {Todo} from '../state/state';
 import TodoItem from './todo-item';
-import Todo from '../models/todo';
 const state = State.getState();
 @observer
 export default class TodoOverview extends React.Component<{}, {}> {

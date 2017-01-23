@@ -1,5 +1,5 @@
 import {reaction} from 'mobx';
-import State from '../state';
+import State from '../state/state';
 let state = State.getState();
 
 export default {

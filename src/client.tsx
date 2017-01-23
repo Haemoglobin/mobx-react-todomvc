@@ -1,4 +1,4 @@
-import State from './state';
+import State from './state/state';
 import React = require('react');
 import ReactDOM = require('react-dom');
 import load from './load';

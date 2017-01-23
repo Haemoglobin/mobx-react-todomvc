@@ -1,6 +1,6 @@
 import {observable, computed, reaction} from 'mobx';
-import Todo from './models/todo'
-import { ALL_TODOS } from './constants';
+import Todo from './todo'
+import { ALL_TODOS } from '../constants';
 
 export default class State {
 	@observable todoBeingEdited: Todo = null;
@@ -30,3 +30,7 @@ export default class State {
 }
 
 const state = new State();
+
+export {
+	Todo
+};

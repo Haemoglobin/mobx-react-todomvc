@@ -3,7 +3,7 @@ import {action} from 'mobx';
 import {observer} from 'mobx-react';
 import {pluralize} from '../utils';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
-import State from '../state';
+import State from '../state/state';
 const state = State.getState();
 
 @observer

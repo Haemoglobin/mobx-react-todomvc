@@ -2,8 +2,7 @@ import React = require('react');
 import ReactDOM =require('react-dom');
 import {observer} from 'mobx-react';
 import {action} from 'mobx';
-import State from '../state';
-import Todo from '../models/todo';
+import State, {Todo} from '../state/state';
 import * as Utils from '../utils';
 
 const ENTER_KEY = 13;

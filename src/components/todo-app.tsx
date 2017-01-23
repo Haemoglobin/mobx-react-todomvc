@@ -5,7 +5,7 @@ let {Router} = require('director');
 import TodoEntry from './todo-entry';
 import TodoOverview from './todo-overview';
 import TodoFooter from './todo-footer';
-import State from '../state';
+import State from '../state/state';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 import DevTool from 'mobx-react-devtools';

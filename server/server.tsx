@@ -8,9 +8,8 @@ import path = require('path');
 let escape = require('jsesc');
 import { renderToString } from 'react-dom/server'
 
-import State from '../src/state';
+import State, {Todo} from '../src/state/state';
 import TodoApp from '../src/components/todo-app';
-import Todo from '../src/models/todo';
 import React = require('react');
 
 const app = express();
