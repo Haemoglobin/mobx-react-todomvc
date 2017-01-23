@@ -11,6 +11,8 @@ import { renderToString } from 'react-dom/server'
 import State, {Todo} from '../src/state/state';
 import TodoApp from '../src/components/todo-app';
 import React = require('react');
+import {useStaticRendering} from 'mobx-react';
+useStaticRendering(true);
 
 const app = express();
 app.use('/node_modules', express.static(path.resolve('./node_modules')));

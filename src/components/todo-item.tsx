@@ -20,7 +20,7 @@ export default class TodoItem extends React.Component<Props, {}> {
 		
 		let className = [
 				todo.completed ? "completed": "",
-				expr(() => todo === state.todoBeingEdited ? "editing" : "")
+				todo === state.todoBeingEdited ? "editing" : ""
 			].join(" ");
 		
 		return (
