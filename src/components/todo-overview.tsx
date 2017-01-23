@@ -1,10 +1,10 @@
 import React = require('react');
 import {observer} from 'mobx-react';
+import {action} from 'mobx';
 import { ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 import State from '../state';
 import TodoItem from './todo-item';
 import Todo from '../models/todo';
-import actions from '../actions';
 const state = State.getState();
 @observer
 export default class TodoOverview extends React.Component<{}, {}> {
@@ -29,6 +29,12 @@ export default class TodoOverview extends React.Component<{}, {}> {
 		</section>
 	}
 
+	@action
+	toggleAll (event: any): any {
+		var checked = event.target.checked;
+		state.todos.forEach(todo => todo.completed = checked);
+	}
+
 	getVisibleTodos(): any[] {
 		return state.todos.filter((todo) => {
 			switch (state.todoFilter) {
@@ -41,9 +47,4 @@ export default class TodoOverview extends React.Component<{}, {}> {
 			}
 		});
 	}
-
-	toggleAll = (event: any) => {
-		var checked = event.target.checked;
-		actions.toggleAll(checked);
-	};
 }

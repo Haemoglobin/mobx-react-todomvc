@@ -1,9 +1,9 @@
 import React = require('react');
+import {action} from 'mobx';
 import {observer} from 'mobx-react';
 import {pluralize} from '../utils';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 import State from '../state';
-import actions from '../actions';
 const state = State.getState();
 
 @observer
@@ -36,6 +36,11 @@ export default class TodoFooter extends React.Component<{}, {}> {
 		);
 	}
 
+	@action
+	clearCompleted() {
+		state.todos = state.todos.filter(todo => !todo.completed);
+	}
+
 	renderFilterLink(filterName: string, url: string, caption: string) {
 		return (<li>
 			<a href={"#/" + url}
@@ -45,8 +50,4 @@ export default class TodoFooter extends React.Component<{}, {}> {
 			{' '}
 		</li>)
 	}
-
-	clearCompleted = () => {
-		actions.clearCompleted();
-	};
 }

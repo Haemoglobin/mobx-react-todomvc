@@ -4,8 +4,7 @@ import {observable, expr} from 'mobx';
 import State from '../state';
 import Todo from '../models/todo';
 const state = State.getState();
-import actions from '../actions';
-
+import {action} from 'mobx';
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
@@ -32,7 +31,7 @@ export default class TodoItem extends React.Component<Props, {}> {
 						className="toggle"
 						type="checkbox"
 						checked={todo.completed}
-						onChange={this.handleToggle}
+						onChange={this.handleToggle.bind(this)}
 						/>
 					<label onDoubleClick={this.handleEdit}>
 						{todo.title}
@@ -51,10 +50,25 @@ export default class TodoItem extends React.Component<Props, {}> {
 		);
 	}
 
+	@action
+	removeTodo(todoToRemove: Todo) {
+		state.todos = state.todos.filter(todo => todo.id !== todoToRemove.id);
+	}
+
+	@action
+    handleToggle() {
+		this.props.todo.completed = !this.props.todo.completed;
+	}
+
+	@action
+	setTitle(todo: Todo, title: string) {
+		todo.title = title;
+	}
+
 	handleSubmit = (event: any) => {
 		const val = this.editText.trim();
 		if (val) {
-			actions.setTitle(this.props.todo, val);
+			this.setTitle(this.props.todo, val);
 			this.editText = val;
 		} else {
 			this.handleDestroy();
@@ -63,7 +77,7 @@ export default class TodoItem extends React.Component<Props, {}> {
 	};
 
 	handleDestroy = () => {
-		actions.removeTodo(this.props.todo);
+		this.removeTodo(this.props.todo);
 		state.todoBeingEdited = null;
 	};
 
@@ -84,9 +98,5 @@ export default class TodoItem extends React.Component<Props, {}> {
 
 	handleChange = (event: any) => {
 		this.editText = event.target.value;
-	};
-
-	handleToggle = () => {
-		actions.toggle(this.props.todo);
 	};
 }
